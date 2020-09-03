@@ -11,13 +11,11 @@
     "Nasser Abouelazm",
     "Chris Allnutt",
     "Randy Torres",
-    "Jeffrey Smith II"
+    "Jeffrey Smith II",
+    "Fabian Emilius"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc --build tsconfig.json",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
-    "prepare": "yarn build",
-    "test": "jest"
+    "build": "rm -rf dist && tsc --build tsconfig.json"
   },
   "dependencies": {
     "@scatterjs/core": "^2.7.54",
