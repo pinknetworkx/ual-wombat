@@ -1,5 +1,5 @@
 {
-  "name": "ual-scatter",
+  "name": "ual-starteos",
   "version": "0.3.0",
   "main": "dist/index.js",
   "license": "MIT",
@@ -20,46 +20,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@scatterjs/core": "2.7.51",
-    "@scatterjs/eosjs2": "1.5.33",
-    "elliptic": "6.5.2",
-    "eosjs": "21.0.1-rc1",
-    "universal-authenticator-library": "0.3.0"
-  },
-  "jest": {
-    "verbose": false,
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts?)$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "tsconfig.json"
-      }
-    },
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules",
-      "<rootDir>/dist"
-    ],
-    "testRegex": "(/src/.*(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "testEnvironment": "jsdom"
+    "@scatterjs/core": "^2.7.54",
+    "@scatterjs/eosjs2": "^1.5.36",
+    "elliptic": "^6.5.3",
+    "eosjs": "^21.0.3",
+    "universal-authenticator-library": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.8.7",
-    "@blockone/eslint-config-blockone": "^3.0.0",
     "@types/elliptic": "^6.4.12",
-    "@types/jest": "^25.1.4",
-    "@types/node": "^13.9.0",
-    "eslint": "^6.8.0",
-    "jest": "^25.1.0",
-    "ts-jest": "^25.2.1",
-    "typescript": "^3.8.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/EOSIO/ual-scatter"
+    "@types/node": "^14.6.3",
+    "typescript": "^4.0.2"
   }
 }
