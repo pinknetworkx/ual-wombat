@@ -13,7 +13,10 @@ declare let window: any
 export class Starteos extends Authenticator {
     private users: StarteosUser[] = []
     private scatter: any
-    private appName: string
+
+    private readonly appName: string
+    private readonly magicLink?: string;
+
     private scatterIsLoading: boolean = false
     private initError: UALError | null = null
 
@@ -27,7 +30,8 @@ export class Starteos extends Authenticator {
         super(chains);
 
         if (options && options.appName) {
-            this.appName = options.appName
+            this.appName = options.appName;
+            this.magicLink = options.magicLink;
         } else {
             throw new UALStarteosError(
                 'Scatter requires the appName property to be set on the `options` argument.',
@@ -90,9 +94,7 @@ export class Starteos extends Authenticator {
     }
 
     public shouldRender(): boolean {
-        const userAgent = window.navigator.userAgent
-
-        return userAgent.toLowerCase().includes('starteos')
+        return Starteos.isDappBrowser() || !!this.magicLink;
     }
 
     public shouldAutoLogin(): boolean {
@@ -100,7 +102,18 @@ export class Starteos extends Authenticator {
     }
 
     public async login(_?: string): Promise<User[]> {
-        this.users = []
+        this.users = [];
+
+        if (!Starteos.isDappBrowser()) {
+            if (this.magicLink) {
+                window.location.href = this.magicLink;
+            }
+
+            throw new UALStarteosError(
+                'You need to open the dapp within the Starteos wallet',
+                UALErrorType.Login, null
+            )
+        }
 
         try {
             for (const chain of this.chains) {
@@ -143,5 +156,11 @@ export class Starteos extends Authenticator {
 
     public getName(): string {
         return 'starteos';
+    }
+
+    private static isDappBrowser(): boolean {
+        const userAgent = window.navigator.userAgent
+
+        return userAgent.toLowerCase().includes('starteos');
     }
 }
