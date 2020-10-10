@@ -1,6 +1,6 @@
 {
-  "name": "ual-starteos",
-  "version": "0.3.1",
+  "name": "ual-mykey",
+  "version": "0.3.0",
   "main": "dist/index.js",
   "license": "MIT",
   "author": {

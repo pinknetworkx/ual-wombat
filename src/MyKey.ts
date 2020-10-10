@@ -4,14 +4,14 @@ import {
     Authenticator, ButtonStyle, Chain,
     UALError, UALErrorType, User
 } from 'universal-authenticator-library'
-import {StarteosIcon} from './StarteosIcon'
-import {StarteosUser} from './StarteosUser'
-import {UALStarteosError} from './UALStarteosError'
+import {MyKeyIcon} from './MyKeyIcon'
+import {MyKeyUser} from './MyKeyUser'
+import {UALMyKeyError} from './UALMyKeyError'
 
 declare let window: any
 
-export class Starteos extends Authenticator {
-    private users: StarteosUser[] = []
+export class MyKey extends Authenticator {
+    private users: MyKeyUser[] = []
     private scatter: any
 
     private readonly appName: string
@@ -33,7 +33,7 @@ export class Starteos extends Authenticator {
             this.appName = options.appName;
             this.magicLink = options.magicLink;
         } else {
-            throw new UALStarteosError(
+            throw new UALMyKeyError(
                 'Scatter requires the appName property to be set on the `options` argument.',
                 UALErrorType.Initialization, null
             )
@@ -50,7 +50,7 @@ export class Starteos extends Authenticator {
 
         // set an errored state if scatter doesn't connect
         if (!await ScatterJS.scatter.connect(this.appName)) {
-            this.initError = new UALStarteosError(
+            this.initError = new UALMyKeyError(
                 'Error occurred while connecting',
                 UALErrorType.Initialization, null
             )
@@ -86,30 +86,30 @@ export class Starteos extends Authenticator {
 
     public getStyle(): ButtonStyle {
         return {
-            icon: StarteosIcon,
-            text: 'Starteos',
-            textColor: 'white',
-            background: '#00cbbe'
+            icon: MyKeyIcon,
+            text: 'MyKey',
+            textColor: '#b5b5b5',
+            background: '#000000'
         }
     }
 
     public shouldRender(): boolean {
-        return Starteos.isDappBrowser() || !!this.magicLink;
+        return MyKey.isDappBrowser() || !!this.magicLink;
     }
 
     public shouldAutoLogin(): boolean {
         return false
     }
 
-    public async login(_?: string): Promise<User[]> {
+    public async login(): Promise<User[]> {
         this.users = [];
 
-        if (!Starteos.isDappBrowser()) {
+        if (!MyKey.isDappBrowser()) {
             if (this.magicLink) {
                 window.location.href = this.magicLink;
             }
 
-            throw new UALStarteosError(
+            throw new UALMyKeyError(
                 'You need to open the dapp within the Starteos wallet',
                 UALErrorType.Login, null
             )
@@ -117,14 +117,14 @@ export class Starteos extends Authenticator {
 
         try {
             for (const chain of this.chains) {
-                const user = new StarteosUser(chain, this.scatter)
+                const user = new MyKeyUser(chain, this.scatter)
                 await user.getKeys()
                 this.users.push(user)
             }
 
             return this.users
         } catch (e) {
-            throw new UALStarteosError('Unable to login', UALErrorType.Login, e)
+            throw new UALMyKeyError('Unable to login', UALErrorType.Login, e)
         }
     }
 
@@ -135,7 +135,7 @@ export class Starteos extends Authenticator {
         try {
             this.scatter.logout()
         } catch (error) {
-            throw new UALStarteosError('Error occurred during logout', UALErrorType.Logout, error)
+            throw new UALMyKeyError('Error occurred during logout', UALErrorType.Logout, error)
         }
     }
 
@@ -143,24 +143,24 @@ export class Starteos extends Authenticator {
      * Scatter provides account names so it does not need to request it
      */
     public async shouldRequestAccountName(): Promise<boolean> {
-        return false
+        return false;
     }
 
     public getOnboardingLink(): string {
-        return 'https://starteos.io/'
+        return 'https://mykey.org/'
     }
 
     public requiresGetKeyConfirmation(): boolean {
-        return false
+        return false;
     }
 
     public getName(): string {
-        return 'starteos';
+        return 'mykey';
     }
 
     private static isDappBrowser(): boolean {
         const userAgent = window.navigator.userAgent
 
-        return userAgent.toLowerCase().includes('starteos');
+        return userAgent.toLowerCase().includes('mykey');
     }
 }
