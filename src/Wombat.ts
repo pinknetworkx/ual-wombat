@@ -4,14 +4,14 @@ import {
     Authenticator, ButtonStyle, Chain,
     UALError, UALErrorType, User
 } from 'universal-authenticator-library'
-import {MyKeyIcon} from './MyKeyIcon'
-import {MyKeyUser} from './MyKeyUser'
-import {UALMyKeyError} from './UALMyKeyError'
+import {WombatIcon} from './WombatIcon'
+import {WombatUser} from './WombatUser'
+import {UALWombatError} from './UALWombatError'
 
 declare let window: any
 
-export class MyKey extends Authenticator {
-    private users: MyKeyUser[] = []
+export class Wombat extends Authenticator {
+    private users: WombatUser[] = []
     private scatter: any
 
     private readonly appName: string
@@ -33,7 +33,7 @@ export class MyKey extends Authenticator {
             this.appName = options.appName;
             this.magicLink = options.magicLink;
         } else {
-            throw new UALMyKeyError(
+            throw new UALWombatError(
                 'Scatter requires the appName property to be set on the `options` argument.',
                 UALErrorType.Initialization, null
             )
@@ -50,7 +50,7 @@ export class MyKey extends Authenticator {
 
         // set an errored state if scatter doesn't connect
         if (!await ScatterJS.scatter.connect(this.appName)) {
-            this.initError = new UALMyKeyError(
+            this.initError = new UALWombatError(
                 'Error occurred while connecting',
                 UALErrorType.Initialization, null
             )
@@ -86,15 +86,15 @@ export class MyKey extends Authenticator {
 
     public getStyle(): ButtonStyle {
         return {
-            icon: MyKeyIcon,
-            text: 'MyKey',
-            textColor: '#b5b5b5',
-            background: '#000000'
+            icon: WombatIcon,
+            text: 'Wombat',
+            textColor: '#FFFFFF',
+            background: '#f43e27'
         }
     }
 
     public shouldRender(): boolean {
-        return MyKey.isDappBrowser() || !!this.magicLink;
+        return Wombat.isDappBrowser() || !!this.magicLink || window.innerWidth > 700;
     }
 
     public shouldAutoLogin(): boolean {
@@ -104,12 +104,12 @@ export class MyKey extends Authenticator {
     public async login(): Promise<User[]> {
         this.users = [];
 
-        if (!MyKey.isDappBrowser()) {
+        if (!Wombat.isDappBrowser()) {
             if (this.magicLink) {
                 window.location.href = this.magicLink;
             }
 
-            throw new UALMyKeyError(
+            throw new UALWombatError(
                 'You need to open the dapp within the Starteos wallet',
                 UALErrorType.Login, null
             )
@@ -117,14 +117,14 @@ export class MyKey extends Authenticator {
 
         try {
             for (const chain of this.chains) {
-                const user = new MyKeyUser(chain, this.scatter)
+                const user = new WombatUser(chain, this.scatter)
                 await user.getKeys()
                 this.users.push(user)
             }
 
             return this.users
         } catch (e) {
-            throw new UALMyKeyError('Unable to login', UALErrorType.Login, e)
+            throw new UALWombatError('Unable to login', UALErrorType.Login, e)
         }
     }
 
@@ -135,7 +135,7 @@ export class MyKey extends Authenticator {
         try {
             this.scatter.logout()
         } catch (error) {
-            throw new UALMyKeyError('Error occurred during logout', UALErrorType.Logout, error)
+            throw new UALWombatError('Error occurred during logout', UALErrorType.Logout, error)
         }
     }
 
@@ -147,7 +147,7 @@ export class MyKey extends Authenticator {
     }
 
     public getOnboardingLink(): string {
-        return 'https://mykey.org/'
+        return 'https://getwombat.io/'
     }
 
     public requiresGetKeyConfirmation(): boolean {
@@ -155,12 +155,12 @@ export class MyKey extends Authenticator {
     }
 
     public getName(): string {
-        return 'mykey';
+        return 'wombat';
     }
 
     private static isDappBrowser(): boolean {
         const userAgent = window.navigator.userAgent
 
-        return userAgent.toLowerCase().includes('mykey');
+        return userAgent.toLowerCase().includes('wombat');
     }
 }

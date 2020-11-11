@@ -1,12 +1,12 @@
-# UAL for MyKey Authenticator
+# UAL for Wombat Authenticator
 
 Forked from [ual-scatter](https://github.com/EOSIO/ual-scatter.git)
 
-This authenticator is meant to be used with [MyKey](https://mykey.org/) and [Universal Authenticator Library](https://github.com/EOSIO/universal-authenticator-library). When used in combination with them, it gives developers the ability to request transaction signatures through Scatter using the common UAL API.
+This authenticator is meant to be used with [Wombat](https://getwombat.io/) and [Universal Authenticator Library](https://github.com/EOSIO/universal-authenticator-library). When used in combination with them, it gives developers the ability to request transaction signatures through Scatter using the common UAL API.
 
 ## Getting Started
 
-`yarn add ual-mykey`
+`yarn add ual-wombat`
 
 #### Dependencies
 
@@ -21,7 +21,7 @@ PlainJS - `ual-plainjs-renderer`
 #### Basic Usage with React
 
 ```javascript
-import { MyKey } from 'ual-mykey'
+import { Wombat } from 'ual-wombat'
 import { UALProvider, withUAL } from 'ual-reactjs-renderer'
 
 const exampleNet = {
@@ -36,9 +36,9 @@ const exampleNet = {
 const App = (props) => <div>{JSON.stringify(props.ual)}</div>
 const AppWithUAL = withUAL(App)
 
-const mykey = new MyKey([exampleNet], { appName: 'Example App' })
+const wombat = new Wombat([exampleNet], { appName: 'Example App' })
 
-<UALProvider chains={[exampleNet]} authenticators={[mykey]}>
+<UALProvider chains={[exampleNet]} authenticators={[wombat]}>
   <AppWithUAL />
 </UALProvider>
 ```

@@ -1,2 +1,2 @@
-export * from './MyKey'
-export * from './MyKeyUser'
+export * from './Wombat'
+export * from './WombatUser'
