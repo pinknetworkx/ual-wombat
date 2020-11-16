@@ -104,17 +104,6 @@ export class Wombat extends Authenticator {
     public async login(): Promise<User[]> {
         this.users = [];
 
-        if (!Wombat.isDappBrowser()) {
-            if (this.magicLink) {
-                window.location.href = this.magicLink;
-            }
-
-            throw new UALWombatError(
-                'You need to open the dapp within the Starteos wallet',
-                UALErrorType.Login, null
-            )
-        }
-
         try {
             for (const chain of this.chains) {
                 const user = new WombatUser(chain, this.scatter)
