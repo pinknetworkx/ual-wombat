@@ -49,7 +49,8 @@ export class Wombat extends Authenticator {
         ScatterJS.plugins(new ScatterEOS())
 
         // set an errored state if scatter doesn't connect
-        if (!await ScatterJS.scatter.connect(this.appName)) {
+        //Detect is the extension
+        if ((!window.__wombat__  && !window.scatter) || !await ScatterJS.scatter.connect(this.appName)) {
             this.initError = new UALWombatError(
                 'Error occurred while connecting',
                 UALErrorType.Initialization, null
